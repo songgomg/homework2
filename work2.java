@@ -3,43 +3,38 @@ import java.util.Scanner;
 public class work2 {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        // รับประเภทของลูกค้า
-        System.out.print("กรุณาใส่ประเภทลูกค้า (silver/gold/platinum): ");
-        String customerCategory = input.nextLine();
 
-        // รับยอดเงินการซื้อ
-        System.out.print("กรุณาใส่จำนวนเงินที่ใช้ซื้อ: ");
-        double totalAmount = input.nextDouble();
+        // รับข้อมูลจากผู้ใช้
+        System.out.print("ประเภทลูกค้า (silver/gold/platinum): ");
+        String customerCategory = input.nextLine().trim();
 
-        // คำนวณยอดเงินหลังจากหักส่วนลด
-        double discountedAmount = applyDiscount(customerCategory, totalAmount);
+        System.out.print("ยอดซื้อ: ");
+        double amount = input.nextDouble();
 
-        // แสดงยอดเงินสุดท้ายหลังจากหักส่วนลด
-        System.out.printf("จำนวนเงินสุดท้ายหลังจากหักส่วนลด: %.2f%n", discountedAmount);
+        // คำนวณยอดเงินสุดท้ายหลังจากหักส่วนลด
+        double finalPrice = myMethod(customerCategory, amount);
+
+        // แสดงผลลัพธ์
+        System.out.printf("ยอดเงินที่ต้องชำระหลังหักส่วนลด: %.2f%n", finalPrice);
 
         input.close();
     }
 
-    public static double applyDiscount(String customerCategory, double totalAmount) {
-        double discountRate;
+    public static double myMethod(String customerCategory, double amount) {
+        double discountPercentage = getDiscountPercentage(customerCategory, amount);
+        return amount - (amount * discountPercentage);
+    }
 
-        // กำหนดอัตราส่วนลดตามประเภทของลูกค้า
+    private static double getDiscountPercentage(String customerCategory, double amount) {
         switch (customerCategory.toLowerCase()) {
             case "silver":
-                discountRate = (totalAmount > 1000) ? 0.02 : 0.0;
-                break;
+                return (amount > 1000) ? 0.02 : 0.0;
             case "gold":
-                discountRate = (totalAmount > 1000) ? 0.03 : 0.0;
-                break;
+                return (amount > 1000) ? 0.03 : 0.0;
             case "platinum":
-                discountRate = 0.05;
-                break;
+                return 0.05;
             default:
-                discountRate = 0.0;
-                break;
+                return 0.0;
         }
-
-        // คำนวณยอดเงินสุดท้าย
-        return totalAmount * (1 - discountRate);
     }
 }
